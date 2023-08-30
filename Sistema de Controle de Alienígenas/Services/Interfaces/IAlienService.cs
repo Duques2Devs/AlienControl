@@ -10,7 +10,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Services.Interfaces
         Task<AlienModel> GetPlanetaByAlienId(int id, PlanetaModel planeta);
         Task<AlienModel> GetAllAliens();
         Task<AlienModel> DeleteAlienById(int id);
-        Task<AlienModel> UpdateAlien(dto);
-        Task<AlienModel> CreateAlien(PlanetaModel id, AlienModel model, List<PoderModel>);
+        Task<AlienModel> UpdateAlien();
+        Task<AlienModel> CreateAlien(PlanetaModel id, AlienModel model, List<PoderModel> poderes);
     }
 }
