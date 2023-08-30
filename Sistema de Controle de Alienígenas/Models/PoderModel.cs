@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
-        public List<AlienModel> Aliens { get; set; }
+        public ICollection<AlienPoderModel> AlienPoderes { get; set; }
     }
 }
