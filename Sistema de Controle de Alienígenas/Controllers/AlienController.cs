@@ -1,0 +1,61 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Sistema_de_Controle_de_Alienígenas.Models;
+using Sistema_de_Controle_de_Alienígenas.Services.Interfaces;
+
+namespace Sistema_de_Controle_de_Alienígenas.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AlienController : Controller
+{
+   private readonly IAlienService _alienService;
+
+   public AlienController(IAlienService alienService)
+   {
+      _alienService = alienService;
+   }
+   
+   [HttpGet("{id}")]
+   public async Task<ActionResult<AlienModel>> GetAlien(int id)
+   {
+      var alien = await _alienService.GetAlienById(id);
+      if (alien == null)
+         return NotFound($"Alien com ID {id} não encontrado. ");
+
+      return Ok(alien);
+   }
+   
+   [HttpGet]
+   public async Task<ActionResult<List<AlienModel>>> GetAliens()
+   {
+      var aliens = await _alienService.GetAllAliens();
+      return Ok(aliens);
+   }
+   
+   [HttpGet("/alien/{id}/planeta")]
+   public async Task<ActionResult<PlanetaModel>> GetPlanetaByAlienId(int id)
+   {
+      var planeta = await _alienService.GetPlanetaByAlienId(id);
+    
+      if (planeta == null)
+      {
+         return NotFound($"Planeta para o Alien com ID {id} não encontrado.");
+      }
+
+      return Ok(planeta);
+   }
+
+
+   [HttpPut("{id}")]
+   public async Task<ActionResult<int>> UpdateAlien(int id, AlienModel alien)
+   {
+      if (id != alien.PlanetaID)
+      {
+         return BadRequest("Id do Alien na URL não corresponde ao ID no corpo da requisição");
+      }
+
+      await _alienService.UpdateAlien(alien);
+
+      return NoContent();
+   }
+}

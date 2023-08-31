@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Sistema_de_Controle_de_Alienígenas.Data;
-using Sistema_de_Controle_de_Alienígenas.Services;
-using Sistema_de_Controle_de_Alienígenas.Services.Interfaces;
+
+using Sistema_de_Controle_de_AlienÃ­genas.Data;
+using Sistema_de_Controle_de_AlienÃ­genas.Services;
+using Sistema_de_Controle_de_AlienÃ­genas.Services.Interfaces;
+using WebApplication = Microsoft.AspNetCore.Builder.WebApplication;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,9 @@ builder.Services.AddScoped<IAlienService, AlienService>();
 builder.Services.AddScoped<IPlanetaService, PlanetaService>();
 builder.Services.AddScoped<IPoderService, PoderService>();
 builder.Services.AddScoped<IRegistroService, RegistroService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
