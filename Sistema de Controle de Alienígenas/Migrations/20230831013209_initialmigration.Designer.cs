@@ -12,8 +12,8 @@ using Sistema_de_Controle_de_Alienígenas.Data;
 namespace Sistema_de_Controle_de_Alienígenas.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230830171954_inicial")]
-    partial class inicial
+    [Migration("20230831013209_initialmigration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
