@@ -37,8 +37,8 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
             }
             return Ok(result);
         }
-       /* [HttpPost("aliens")]
-        public async Task<IActionResult> CreatePoderByAlienId(PoderDTO poder, ICollection<int> aliensId)
+        [HttpPost("aliens")]
+        public async Task<IActionResult> CreatePoderByAlienId([FromBody] PoderDTO poder, [FromQuery] ICollection<int> aliensId)
         {
             var result = await _poderService.CreatePoderByAlienId(poder, aliensId);
             if (result == null)
@@ -46,8 +46,8 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
-        }*/
-        [HttpPut]
+        }
+        /*[HttpPut]
         public async Task<IActionResult> UpdateAlienPoder(int id, ICollection<int> aliensId)
         {
             var result = await _poderService.UpdateAlienPoder(id, aliensId);
@@ -56,7 +56,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
-        }
+        }*/
         [HttpDelete]
         public async Task<IActionResult> DeletePoder(int id)
         {

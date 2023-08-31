@@ -9,7 +9,6 @@ namespace Sistema_de_Controle_de_Alienígenas.Services.Interfaces
         Task<GetPoderDTO> GetPoderById(int id);//ok**
         Task<string> CreatePoder(PoderDTO poder);//ok**
         Task<string> CreatePoderByAlienId(PoderDTO poder, ICollection<int> aliensId);//ok**
-        Task<string> UpdateAlienPoder(int id, ICollection<int> aliensId);//ok**
         Task<string> DeletePoder(int id);//ok**
         
     }

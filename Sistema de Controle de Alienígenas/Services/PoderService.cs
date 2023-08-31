@@ -67,30 +67,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
 
             return "Poder cadastrado com sucesso";
         }
-        public async Task<string> UpdateAlienPoder(int id, ICollection<int> aliensId)
-        {
-            var poder = await _context.Poderes.FindAsync(id);
-            if (poder == null) return "Poder não encontrado";
-
-            var alien = await _context.Aliens.Where(a => aliensId.Contains(a.Id)).ToListAsync();
-            if (alien == null) return "Alien não encontrado";
-
-            var poderAliens = poder.AlienPoderes.ToList();
-            poderAliens.RemoveAll(a => !aliensId.Contains(a.AlienId));
-
-            poderAliens.AddRange(aliensId.Select(id => new AlienPoderModel
-            {
-                PoderId = poder.Id,
-                AlienId = id
-            }));
-
-            poder.AlienPoderes = poderAliens;
-
-            await _context.SaveChangesAsync();
-
-            return "Poder associado com sucesso!";
-        }
-
+        
         public async Task<string> DeletePoder(int id)
         {
             var poder = await _context.Poderes.FindAsync(id);
