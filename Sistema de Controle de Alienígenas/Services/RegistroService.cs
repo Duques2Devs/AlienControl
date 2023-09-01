@@ -5,7 +5,9 @@ using Sistema_de_Controle_de_Alienígenas.Data;
 using Sistema_de_Controle_de_Alienígenas.DTO;
 using Sistema_de_Controle_de_Alienígenas.Models;
 using Sistema_de_Controle_de_Alienígenas.Services.Interfaces;
+using System;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Sistema_de_Controle_de_Alienígenas.Services
 {
@@ -31,39 +33,53 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
 
         public async Task CreateRegistroInOut(RegistroDTO registro)
         {
-
             var alien = await _dbContext.Aliens.FindAsync(registro.AlienId);
 
             if (alien != null)
             {
                 if (registro.Entrando == true)
-                {//ENTROU
-                 //
-                    alien.EstaNaTerra = true;
-                    _dbContext.Entry(alien).State = EntityState.Modified;
-
-                    var registroModel = new RegistroModel
+                {
+                    if(registro.Data.CompareTo(DateTime.Now) < 0)
                     {
-                        AlienId = registro.AlienId,
-                        DataEntrada = registro.Data
-                    };
-                    _dbContext.Registros.Add(registroModel);
-                    await _dbContext.SaveChangesAsync();
+                        alien.EstaNaTerra = true;
+                        _dbContext.Entry(alien).State = EntityState.Modified;
+
+                        var registroModel = new RegistroModel
+                        {
+                            AlienId = registro.AlienId,
+                            DataEntrada = registro.Data
+                        };
+                        _dbContext.Registros.Add(registroModel);
+                        await _dbContext.SaveChangesAsync();
+                    }else throw new Exception("Data Maior que Data Atual");
                 }
                 else
-                {//SAIU
-                    alien.EstaNaTerra = false;
-                    _dbContext.Entry(alien).State = EntityState.Modified;
+                {
+                    if (alien.EstaNaTerra)
+                    {
+                        var lista = await _dbContext.Registros.Where(r => r.AlienId == registro.AlienId).ToListAsync();
+                        var registroAlien = lista[lista.Count - 1];
 
-                    var lista = await _dbContext.Registros.Where(r => r.AlienId == registro.AlienId).ToListAsync();
-                    var registroAlien = lista[lista.Count - 1];
+                        if (registro.Data.CompareTo(DateTime.Now) < 0)
+                        {
+                            if (registro.Data.CompareTo(registroAlien.DataEntrada) > 0)
+                            {
+                                alien.EstaNaTerra = false;
+                                _dbContext.Entry(alien).State = EntityState.Modified;
 
-                    registroAlien.DataSaida = registro.Data;
-                    await _dbContext.SaveChangesAsync();
+
+                                registroAlien.DataSaida = registro.Data;
+                                await _dbContext.SaveChangesAsync();
+                            }
+                            else throw new Exception("Data de Saída inferior a Data de Entrada.");
+                        }
+                        else throw new Exception("Data Maior que Data Atual");                              
+                    }
+                    else throw new Exception("Alien não está na Terra.");                   
                 }
             }
         }
-
+      
         public async Task UpdateRegistro(int id, UpdateRegistroDTO registro)
         {
             if (id != registro.Id)

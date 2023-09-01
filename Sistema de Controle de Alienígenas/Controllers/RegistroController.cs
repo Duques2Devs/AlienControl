@@ -37,10 +37,15 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
         [HttpPost]
         public async Task<ActionResult<RegistroModel>> CreateRegistroInOut(RegistroDTO registro)
         {
-            await _registroService.CreateRegistroInOut(registro);
-
-            return Ok(registro);
-           // return CreatedAtAction(nameof(GetRegistroById), registro);           
+            try
+            {
+                await _registroService.CreateRegistroInOut(registro);
+                return Ok(registro);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
