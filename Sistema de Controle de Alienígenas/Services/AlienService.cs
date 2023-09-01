@@ -103,5 +103,18 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             await _context.SaveChangesAsync();
             return alien;
         }
+
+        public async Task<List<PoderModel>?> GetPoderesByAlienId(int id)
+        { 
+            var alien = await _context.Aliens.FindAsync(id);
+            if (alien == null)
+            {
+                return null;
+            }
+
+            var poderes = await _context.AlienPoder.Where(ap => ap.AlienId == id).Select(ap => ap.Poder).ToListAsync();
+
+            return poderes;
+        }
     }
 }

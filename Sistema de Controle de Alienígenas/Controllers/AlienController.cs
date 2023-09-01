@@ -47,6 +47,19 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
             return Ok(planeta);
         }
 
+        [HttpGet("{id}/poderes")]
+        public async Task<ActionResult<List<PoderModel>>> GetPoderesByAlienId(int id)
+        {
+            var poderes = await _alienService.GetPoderesByAlienId(id);
+
+            if (poderes == null)
+            {
+                return NotFound($"Poderes para o Alien com ID {id} não encontrado.");
+            }
+
+            return Ok(poderes);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<int>> UpdateAlien(int id, AlienModel alien)
         {
