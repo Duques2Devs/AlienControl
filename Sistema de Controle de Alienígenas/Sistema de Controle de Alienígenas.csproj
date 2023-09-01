@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="WeatherForecast.cs" />
     <Compile Remove="Controllers\WeatherForecastController.cs" />
   </ItemGroup>
