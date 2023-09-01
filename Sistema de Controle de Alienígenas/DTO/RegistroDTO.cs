@@ -2,5 +2,8 @@
 {
     public class RegistroDTO
     {
+        public int AlienId { get; set; }
+        public DateTime Data { get; set; }
+        public bool Entrando { get; set; }
     }
 }

@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Win32;
 using Sistema_de_Controle_de_Alienígenas.Data;
+using Sistema_de_Controle_de_Alienígenas.DTO;
 using Sistema_de_Controle_de_Alienígenas.Models;
 using Sistema_de_Controle_de_Alienígenas.Services.Interfaces;
+using System.Linq;
 
 namespace Sistema_de_Controle_de_Alienígenas.Services
 {
@@ -27,72 +29,54 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             .FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task CreateRegistroInOut(int id, DateTime data, bool inOut)
+        public async Task CreateRegistroInOut(RegistroDTO registro)
         {
-            var alien = await _dbContext.Aliens.FindAsync(id);
+
+            var alien = await _dbContext.Aliens.FindAsync(registro.AlienId);
 
             if (alien != null)
             {
-                var registroModel = new RegistroModel
-                {
-                    AlienId = id,
-                    DataRegistro = data
-                };
-
-                if (inOut)
-                {
+                if (registro.Entrando == true)
+                {//ENTROU
+                 //
                     alien.EstaNaTerra = true;
-                    registroModel.TipoRegistro = TipoRegistro.Entrada; // Ou algum outro valor que represente entrada.
-                }
-                else
-                {
-                    alien.EstaNaTerra = false;
-                    registroModel.TipoRegistro = TipoRegistro.Saida; // Ou algum outro valor que represente saída.
-                }
+                    _dbContext.Entry(alien).State = EntityState.Modified;
 
-                _dbContext.Registros.Add(registroModel);
-                await _dbContext.SaveChangesAsync();
-            }
-
-            /*
-            var alien = _dbContext.Aliens.FindAsync(id);
-
-            if (alien != null)
-            {
-                if (inOut == true)
-                {//ENTROU        
-
-                    alien.EstaNaTerra = true;
                     var registroModel = new RegistroModel
                     {
-                        AlienId = id,
-                        DataEntrada = data
+                        AlienId = registro.AlienId,
+                        DataEntrada = registro.Data
                     };
-
+                    _dbContext.Registros.Add(registroModel);
+                    await _dbContext.SaveChangesAsync();
                 }
                 else
                 {//SAIU
-                    var registroModel = new RegistroModel
-                    {
-                        AlienId = id,
-                        DataSaida = data
-                    };
-                    
-                }
-                _dbContext.Registros.Add(registroModel);
-                await _dbContext.SaveChangesAsync();
-            }*/
+                    alien.EstaNaTerra = false;
+                    _dbContext.Entry(alien).State = EntityState.Modified;
 
+                    var lista = await _dbContext.Registros.Where(r => r.AlienId == registro.AlienId).ToListAsync();
+                    var registroAlien = lista[lista.Count - 1];
+
+                    registroAlien.DataSaida = registro.Data;
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
         }
 
-        public async Task UpdateRegistro(int id, RegistroModel registro)
+        public async Task UpdateRegistro(int id, UpdateRegistroDTO registro)
         {
             if (id != registro.Id)
             {
                 throw new ArgumentException("IDs não correspondem.");
             }
 
-            _dbContext.Entry(registro).State = EntityState.Modified;
+            var registroAlien = await GetRegistroById(id);
+
+            registroAlien.AlienId = registro.AlienId;
+            registroAlien.DataEntrada = registro.DataEntrada;
+            registroAlien.DataSaida = registro.DataSaida;
+
             await _dbContext.SaveChangesAsync();
         }
 

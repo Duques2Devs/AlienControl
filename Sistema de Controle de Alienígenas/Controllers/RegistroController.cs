@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sistema_de_Controle_de_Alienígenas.DTO;
 using Sistema_de_Controle_de_Alienígenas.Models;
 using Sistema_de_Controle_de_Alienígenas.Services.Interfaces;
 
@@ -16,6 +17,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
             _registroService = registroService;
         }
 
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<RegistroModel>>> GetAllRegistros()
         {
             var registros = await _registroService.GetAllRegistros();
@@ -32,8 +34,17 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
             return Ok(registro);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<RegistroModel>> CreateRegistroInOut(RegistroDTO registro)
+        {
+            await _registroService.CreateRegistroInOut(registro);
+
+            return Ok(registro);
+           // return CreatedAtAction(nameof(GetRegistroById), registro);           
+        }
+
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateRegistro(int id, RegistroModel registro)
+        public async Task<ActionResult> UpdateRegistro(int id, UpdateRegistroDTO registro)
         {
             if (id != registro.Id) return BadRequest();
 
