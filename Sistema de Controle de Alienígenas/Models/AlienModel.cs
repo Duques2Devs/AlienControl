@@ -11,9 +11,6 @@
         public ICollection<AlienPoderModel> AlienPoderes { get; set; }
         public bool EstaNaTerra { get; set; }
         public ICollection<RegistroModel> Registro { get; set; }
-
         public PlanetaModel Planeta { get; set; }
-
-        
     }
 }

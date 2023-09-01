@@ -17,7 +17,7 @@ builder.Services.AddDbContext<Context>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<IAlienService, AlienService>();
+//builder.Services.AddScoped<IAlienService, AlienService>();
 builder.Services.AddScoped<IPlanetaService, PlanetaService>();
 builder.Services.AddScoped<IPoderService, PoderService>();
 builder.Services.AddScoped<IRegistroService, RegistroService>();

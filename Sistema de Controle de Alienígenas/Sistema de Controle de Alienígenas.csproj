@@ -23,8 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="WeatherForecast.cs" />
-    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Folder Include="DTO\" />
   </ItemGroup>
 
 </Project>
