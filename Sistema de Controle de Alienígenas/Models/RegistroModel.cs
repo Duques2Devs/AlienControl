@@ -4,8 +4,9 @@
     {
         public int Id { get; set; }
         public int AlienId { get; set; }
-        public DateTime DataSaida { get; set; }
         public DateTime DataEntrada { get; set; }
+        public DateTime? DataSaida { get; set; }
+
         public AlienModel Alien { get; set; }
     }
 }
