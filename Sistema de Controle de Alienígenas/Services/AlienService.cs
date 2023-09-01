@@ -15,6 +15,40 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             _context = context;
         }
 
+        public async Task<AlienModel> UpdateAlien(AlienModel alien)
+        {
+            _context.Entry(alien).State = EntityState.Modified;
+            await _context.SaveChangesAsync(); return alien;
+        }
+
+        // Recuperar o Alien com pelo ID 
+        public async Task<AlienModel?> GetAlienById(int id)
+        {
+            var alien = await _context.Aliens.FindAsync(id);
+            return alien;
+        }
+
+        // Recuperar todos os Aliens
+        public async Task<List<AlienModel>> GetAllAliens()
+        {
+            var aliens = await _context.Aliens.ToListAsync();
+            return aliens;
+        }
+
+        // Recuperar os planetas associados ao Alien
+        public async Task<PlanetaModel?> GetPlanetaByAlienId(int id)
+        {
+            var alien = await _context.Aliens.FindAsync(id);
+
+            if (alien == null)
+            {
+                return null; // Ou você pode lançar uma exceção NotFound aqui.
+            }
+
+            var planeta = await _context.Planetas.FindAsync(alien.PlanetaID);
+            return planeta;
+        }
+
         public async Task<AlienPoderModel?> AssociarAlienAoPoder(int alienId, int poderId)
         {
             var poder = await _context.Poderes.FirstOrDefaultAsync(p => p.Id == poderId);
@@ -28,7 +62,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             {
                 return null;
             }
-            
+
             var alienPoder = new AlienPoderModel
             {
                 AlienId = alienId,
@@ -55,17 +89,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             _context.Aliens.Add(alienModel);
             await _context.SaveChangesAsync();
             return alienModel;
-        public async Task<AlienModel> UpdateAlien(AlienModel alien)
-        {
-            _context.Entry(alien).State = EntityState.Modified;
-            await _context.SaveChangesAsync(); return alien;
         }
-
-
-        //public Task<AlienModel> CreateAlien(PlanetaModel id, AlienModel model, List<PoderModel> poderes)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public async Task<AlienModel?> DeleteAlienById(int id)
         {
@@ -78,34 +102,6 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             _context.Aliens.Remove(alien);
             await _context.SaveChangesAsync();
             return alien;
-        }
-
-        // Recuperar o Alien com pelo ID 
-        public async Task<AlienModel> GetAlienById(int id)
-        {
-            var alien = await _context.Aliens.FindAsync(id);
-            return alien;
-        }
-
-        // Recuperar todos os Aliens
-        public async Task<List<AlienModel>> GetAllAliens()
-        {
-            var aliens = await _context.Aliens.ToListAsync();
-            return aliens;
-        }
-
-        // Recuperar os planetas associados ao Alien
-        public async Task<PlanetaModel> GetPlanetaByAlienId(int id)
-        {
-            var alien = await _context.Aliens.FindAsync(id);
-
-            if (alien == null)
-            {
-                return null; // Ou você pode lançar uma exceção NotFound aqui.
-            }
-
-            var planeta = await _context.Planetas.FindAsync(alien.PlanetaID);
-            return planeta;
         }
     }
 }
