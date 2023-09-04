@@ -41,10 +41,10 @@ namespace Sistema_de_Controle_de_Alienígenas.Data
                .HasForeignKey(ap => ap.PoderId);
 
             //Relação 1 -> N entre alien e registro
-            modelBuilder.Entity<RegistroModel>()
-                .HasOne(a => a.Alien)
-                .WithMany()
-                .HasForeignKey(a => a.AlienId);
+            modelBuilder.Entity<AlienModel>()
+                .HasMany(a => a.Registro)
+                .WithOne(r => r.Alien)
+                .HasForeignKey(r => r.AlienId);
         }
     }
 }
