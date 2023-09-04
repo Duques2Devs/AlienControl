@@ -13,5 +13,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Services.Interfaces
         Task<AlienModel?> DeleteAlienById(int id);
         Task<AlienModel> UpdateAlien(AlienPutDTO alien, int Id);
         Task<List<PoderModel>?> GetPoderesByAlienId(int id);
+        Task<AlienModel?> GetAlienTudo(int id);
+        Task<List<RegistroModel>?> GetAlienRegistros(int id);
     }
 }

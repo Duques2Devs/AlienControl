@@ -27,7 +27,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             alienNovo.Idade = alien.Idade;
             alienNovo.Corpo = alien.Corpo;
             alienNovo.PlanetaID = alien.PlanetaID;
-            
+
             await _context.SaveChangesAsync(); return alienNovo;
 
         }
@@ -116,7 +116,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
         }
 
         public async Task<List<PoderModel>?> GetPoderesByAlienId(int id)
-        { 
+        {
             var alien = await _context.Aliens.FindAsync(id);
             if (alien == null)
             {
@@ -126,6 +126,35 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             var poderes = await _context.AlienPoder.Where(ap => ap.AlienId == id).Select(ap => ap.Poder).ToListAsync();
 
             return poderes;
+        }
+
+        public async Task<AlienModel?> GetAlienTudo(int id)
+        {
+            return await _context.Aliens
+                .Include(a => a.Registro)
+                .Include(a => a.Planeta)
+                .Include(a => a.AlienPoderes)
+                .ThenInclude(ap => ap.Poder)
+                .FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<List<RegistroModel>?> GetAlienRegistros(int id)
+        {
+            var alien = await _context.Aliens.FindAsync(id);
+            if (alien == null)
+            {
+                return null;
+            }
+
+            var registros = await _context.Registros.Where(r => r.AlienId == id).Select(r=> new RegistroModel
+            {
+                Id = r.Id,
+                AlienId = r.AlienId,
+                DataEntrada = r.DataEntrada,
+                DataSaida = r.DataSaida,
+            }).ToListAsync();
+
+            return registros;
         }
     }
 }

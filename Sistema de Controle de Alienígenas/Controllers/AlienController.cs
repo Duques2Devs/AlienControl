@@ -60,6 +60,32 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
             return Ok(poderes);
         }
 
+        [HttpGet("{id}/registros")]
+        public async Task<ActionResult<List<RegistroModel>>> GetAlienRegistros(int id)
+        {
+            var registros = await _alienService.GetAlienRegistros(id);
+
+            if(registros == null)
+            {
+                return NotFound($"Registros para o Alien com ID {id} não encontrado.");
+            }
+
+            return Ok(registros);
+        }
+
+        [HttpGet("{id}/tudo")]
+        public async Task<ActionResult<AlienModel>> GetAlienTudo(int id)
+        {
+            var alien = await _alienService.GetAlienTudo(id);
+
+            if(alien == null)
+            {
+                return NotFound($"Alien com ID {id} não encontrado. ");
+            }
+
+            return Ok(alien);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<int>> UpdateAlien(int id, AlienPutDTO alien)
         {
