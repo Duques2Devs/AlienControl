@@ -5,6 +5,6 @@
         public int AlienId { get; set; }
         public int PoderId { get; set; }
         public AlienModel Alien { get; set; }
-        public PoderModel Poder { get; set; }
+        public PoderModel Poder { get; set; } 
     }
 }

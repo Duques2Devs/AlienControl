@@ -25,11 +25,9 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
 
         public async Task<List<AlienModel>> GetHabitantesPlanetas(int Id)
         {
-            var planeta = await _con.Planetas
-                .Include(p => p.Habitantes)
-                .FirstOrDefaultAsync(p => p.Id == Id);
+            var planeta = await _con.Aliens.Where(a => a.PlanetaID == Id).ToListAsync();
 
-            return planeta != null ? planeta.Habitantes : null;
+            return planeta != null ? planeta : null;
         }
 
         public async Task DeletePlaneta(int Id)

@@ -15,10 +15,21 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             _context = context;
         }
 
-        public async Task<AlienModel> UpdateAlien(AlienModel alien)
+        public async Task<AlienModel> UpdateAlien(AlienPutDTO alien, int Id)
         {
-            _context.Entry(alien).State = EntityState.Modified;
-            await _context.SaveChangesAsync(); return alien;
+
+            var alienNovo = await _context.Aliens.FindAsync(Id);
+
+            if (alienNovo == null) { return null; }
+
+            alienNovo.Nome = alien.Nome;
+            alienNovo.Altura = alien.Altura;
+            alienNovo.Idade = alien.Idade;
+            alienNovo.Corpo = alien.Corpo;
+            alienNovo.PlanetaID = alien.PlanetaID;
+            
+            await _context.SaveChangesAsync(); return alienNovo;
+
         }
 
         // Recuperar o Alien com pelo ID 

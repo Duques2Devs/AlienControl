@@ -12,8 +12,8 @@ using Sistema_de_Controle_de_Alienígenas.Data;
 namespace Sistema_de_Controle_de_Alienígenas.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230830192155_CreateServicesAlien")]
-    partial class CreateServicesAlien
+    [Migration("20230904001117_incial")]
+    partial class incial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,7 +142,7 @@ namespace Sistema_de_Controle_de_Alienígenas.Migrations
                     b.Property<DateTime>("DataEntrada")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataSaida")
+                    b.Property<DateTime?>("DataSaida")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

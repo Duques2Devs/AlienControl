@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Sistema_de_Controle_de_Alienígenas.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class incial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,8 +50,8 @@ namespace Sistema_de_Controle_de_Alienígenas.Migrations
                     Altura = table.Column<int>(type: "int", nullable: false),
                     Idade = table.Column<int>(type: "int", nullable: false),
                     Corpo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlanetaID = table.Column<int>(type: "int", nullable: false),
                     EstaNaTerra = table.Column<bool>(type: "bit", nullable: false),
+                    PlanetaID = table.Column<int>(type: "int", nullable: false),
                     PlanetaModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -101,8 +101,8 @@ namespace Sistema_de_Controle_de_Alienígenas.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AlienId = table.Column<int>(type: "int", nullable: false),
-                    DataSaida = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DataEntrada = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataSaida = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AlienModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

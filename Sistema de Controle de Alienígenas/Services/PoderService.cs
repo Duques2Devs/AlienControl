@@ -55,13 +55,21 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
         public async Task<string> CreatePoderByAlienId(PoderDTO poder, ICollection<int> aliensId)
         {
             var poderModel = new PoderModel { Nome = poder.Nome, Descricao = poder.Descricao };
-            var aliens = await _context.Aliens.FindAsync(aliensId);
-            poderModel.AlienPoderes =
-                aliensId.Select(id => new AlienPoderModel
-                {
-                    AlienId = id,
-                    PoderId = poderModel.Id
-                }).ToList();
+
+
+            foreach(var alienId in aliensId)
+            {
+                var alien = await _context.Aliens.FindAsync(alienId);
+
+                var alienPoder = new AlienPoderModel { AlienId = alienId, PoderId = poderModel.Id , Alien = alien, Poder = poderModel};
+
+                _context.AlienPoder.Add(alienPoder);
+
+                alien.AlienPoderes.Add(alienPoder);
+
+            }
+
+            
             await _context.Poderes.AddAsync(poderModel);
             await _context.SaveChangesAsync();
 

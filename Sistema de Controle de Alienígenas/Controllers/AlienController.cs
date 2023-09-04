@@ -61,14 +61,14 @@ namespace Sistema_de_Controle_de_Alienígenas.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<int>> UpdateAlien(int id, AlienModel alien)
+        public async Task<ActionResult<int>> UpdateAlien(int id, AlienPutDTO alien)
         {
-            if (id != alien.PlanetaID)
+            if (id != alien.Id)
             {
                 return BadRequest("Id do Alien na URL não corresponde ao ID no corpo da requisição");
             }
 
-            await _alienService.UpdateAlien(alien);
+            await _alienService.UpdateAlien(alien, id);
 
             return NoContent();
         }
