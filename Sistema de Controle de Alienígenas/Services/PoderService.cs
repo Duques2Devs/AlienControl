@@ -61,6 +61,8 @@ namespace Sistema_de_Controle_de_Alienígenas.Services
             {
                 var alien = await _context.Aliens.FindAsync(alienId);
 
+                if (alien == null) return "AlienID não encontrado";
+
                 var alienPoder = new AlienPoderModel { AlienId = alienId, PoderId = poderModel.Id , Alien = alien, Poder = poderModel};
 
                 _context.AlienPoder.Add(alienPoder);
